@@ -1,7 +1,6 @@
-if('serviceWorker' in navigation) {
-    navigator.serviceWorker
-    .register('/sw.js')
-    .then(function() {
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker.register('./sw.js')
+	.then(function() {
 		console.log('Registration worked!');
 	})
 	.catch(function() {
