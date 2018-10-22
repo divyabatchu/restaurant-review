@@ -187,7 +187,7 @@ nav h1 a {
   justify-content: center;
   width: 100%;
   height: 50px;
-  background-color: #174375;
+  background-color:	#FF4500;
   align-items: center;
   padding: 15px 0;
 }
@@ -281,7 +281,7 @@ label {
 
 
 #restaurants-list li a {
-  background-color: #174375;
+  background-color:	#FF4500;
   border-bottom: 3px solid #eee;
   color: #fff;
   display: inline-block;
