@@ -1,16 +1,14 @@
-self.addEventListener('install', function(event){
+self.addEventListener('install', function(e){
 
 });
-let staticCacheName = 'restaurant-cache';
-let urlsToCache = [
-  './',
+const cacheFiles =[
+'./',
   './index.html',
   './restaurant.html',
   './css/styles.css',
   './js/main.js',
   './js/restaurant_info.js',
   './js/dbhelper.js',
-  './js/sw_registration.js',
   './data/restaurants.json',
   './img/1.jpg',
   './img/2.jpg',
@@ -23,46 +21,35 @@ let urlsToCache = [
   './img/9.jpg',
   './img/10.jpg',
 ];
-
-
-/**
- * Installation of service worker
- */
-self.addEventListener('install', function(event) {
-	event.waitUntil(
-		caches.open(staticCacheName).then(function(cache) {
-			return cache.addAll(urlsToCache);
+self.addEventListener('install',function(e){
+    e.waitUntil(
+        caches.open('v1').then(function(cache){
+            return cache.addAll(cacheFiles);
         })
     );
 });
-
-
-/**
- * Activation of service worker
- */
-self.addEventListener('activate', function(event) {
-    event.waitUntil(
-        caches.keys().then(function(cacheNames) {
-            return Promise.all(
-                cacheNames.filter(function(cacheName) {
-                    return cacheName.startsWith('restaurant-') &&
-                        cacheName != staticCacheName;
-                }).map(function(cacheName) {
-                    return caches.delete(cacheName);
+self.addEventListener('fetch', function(e){
+    e.respondWith(
+        caches.match(e.request).then(function(response){
+            if (response) {
+                console.log('Found',e.request,'in cache');
+                return response;
+            }
+            else {
+                console.log('could not find',e.request, 'in cache, FETCHING!');
+                return fetch(e.request)
+                .then(function(response){
+                    const clonedRespone = response.clone();
+                    caches.open('v1').then(function(cache){
+                        cache.put(e.request,clonedRespone);
+                    })
+                    return response;
                 })
-            );
+                .catch(function(err){
+                    console.error(err);
+                });
+            }
         })
     );
-});
 
-
-/**
- * Fetching for offline content viewing
- */
-self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        caches.match(event.request).then(function(response) {
-            return response || fetch(event.request);
-        })
-    );
 });

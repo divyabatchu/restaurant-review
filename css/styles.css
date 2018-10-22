@@ -448,15 +448,7 @@ label {
   #restaurants-list li {
     max-width: 100%;
   }
-  .filter-options {
-    max-width: 100%;
-  }
-  .filter-options h2 {
-    max-width: 100%;
-  }
-  .filter-options select {
-    max-width: 100%;
-  }
+  
   .inside {
     display: flex;
     flex-direction: row;
